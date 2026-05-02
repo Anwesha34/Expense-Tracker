@@ -1,7 +1,8 @@
 {
   "name": "expense-tracker",
   "version": "1.0.0",
-  "description": "Expense Tracker App",
+  "description": "Expense Tracker Backend",
+  "main": "src/index.js",
   "type": "module",
   "scripts": {
     "start": "node src/index.js"
