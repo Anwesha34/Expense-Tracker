@@ -17,7 +17,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// ✅ Fixed CORS
 app.use(cors({
   origin: process.env.DOMAIN || "*",
   credentials: false,
@@ -31,15 +30,16 @@ app.get("/", (req, res) => {
 app.use("/api/user", userRouter);
 app.use("/api/transaction", TransactionRouter);
 
-// ================= PORT =================
-const PORT = process.env.PORT;
+// ✅ IMPORTANT FIX
+const PORT = process.env.PORT || 8000;
 
 // ================= DATABASE + SERVER START =================
 mongoose.connect(process.env.DB_URL)
   .then(() => {
     console.log("Database connected ✅");
 
-    app.listen(PORT, () => {
+    // 🔥 Bind to 0.0.0.0 (REQUIRED for Railway)
+    app.listen(PORT, "0.0.0.0", () => {
       console.log(`Server is running on port ${PORT} 🚀`);
     });
   })
