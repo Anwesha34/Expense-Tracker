@@ -16,20 +16,25 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
 app.use(cors({
-    origin: process.env.DOMAIN,
+    origin: process.env.DOMAIN || "*", // fallback for safety
     credentials: true,
 }));
 
 // Routes
-app.get("/", (req, res) => res.json({ message: "Setup Success" }));
+app.get("/", (req, res) => res.json({ message: "Setup Success 🚀" }));
 app.use("/api/user", userRouter);
-app.use("/api/transaction", TransactionRouter); // ✅ THIS FIXES YOUR ERROR
+app.use("/api/transaction", TransactionRouter);
 
 // DB
 mongoose.connect(process.env.DB_URL)
-    .then(() => console.log("Database connected !"))
-    .catch(() => console.log("Database not connected !"));
+    .then(() => console.log("Database connected ✅"))
+    .catch((err) => console.log("Database error ❌", err));
 
-// Server
-app.listen(3030, () => console.log("Server is running on port 3030"));
+// ✅ IMPORTANT FIX (PORT)
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT} 🚀`);
+});
