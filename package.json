@@ -6,17 +6,11 @@
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "build": "npm install"
   },
-  "keywords": ["expense-tracker"],
-  "author": "Anwesha",
-  "license": "ISC",
   "dependencies": {
     "dotenv": "^17.3.1",
     "express": "^4.21.2",
     "mongoose": "^9.3.1"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.14"
   }
 }
