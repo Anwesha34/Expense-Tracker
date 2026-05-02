@@ -11,30 +11,38 @@ dotenv.config();
 
 const app = express();
 
-// Middlewares
+// ================= MIDDLEWARE =================
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// ✅ Fixed CORS
 app.use(cors({
-    origin: process.env.DOMAIN || "*", // fallback for safety
-    credentials: true,
+  origin: process.env.DOMAIN || "*",
+  credentials: false,
 }));
 
-// Routes
-app.get("/", (req, res) => res.json({ message: "Setup Success 🚀" }));
+// ================= ROUTES =================
+app.get("/", (req, res) => {
+  res.json({ message: "Setup Success 🚀" });
+});
+
 app.use("/api/user", userRouter);
 app.use("/api/transaction", TransactionRouter);
 
-// DB
+// ================= PORT =================
+const PORT = process.env.PORT;
+
+// ================= DATABASE + SERVER START =================
 mongoose.connect(process.env.DB_URL)
-    .then(() => console.log("Database connected ✅"))
-    .catch((err) => console.log("Database error ❌", err));
+  .then(() => {
+    console.log("Database connected ✅");
 
-// ✅ IMPORTANT FIX (PORT)
-const PORT = process.env.PORT || 8000;
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT} 🚀`);
-});
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT} 🚀`);
+    });
+  })
+  .catch((err) => {
+    console.error("Database connection failed ❌", err);
+  });
